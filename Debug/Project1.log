@@ -1,0 +1,4 @@
+﻿  Source.cpp
+D:\prog\OOP\Tamagochi\Project1\Source.cpp(242,13): warning C4244:  аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\prog\OOP\Tamagochi\Project1\Source.cpp(285,6): warning C4101:  suma: неиспользованная локальная переменная
+  Project1.vcxproj -> D:\prog\OOP\Tamagochi\Project1\Debug\Project1.exe

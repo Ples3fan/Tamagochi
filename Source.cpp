@@ -3,6 +3,7 @@
 #include <windows.h>
 #include<string>
 #include<conio.h>
+#include<ctime>
 using namespace std;
 
 void z() { Sleep(100); }
@@ -11,10 +12,36 @@ void z3() { Sleep(900); }
 
 class Murdock {
 private:
-	int stamina = 20;
-	int inpoints = 0;
+	string Nikname;
+	int stamina;
+	int inpoints;
+	int happypoints;
 
 public:
+	Murdock() {
+		Nikname = "Стандарт";
+		stamina = 20;
+		inpoints = 20;
+		happypoints = 20;
+	}
+	Murdock(string Nik, int chois){
+		Nikname = Nik;
+		if (chois == 1) {
+			stamina = 20;
+			inpoints = 10;
+			happypoints = 30;
+		}
+		if (chois == 2) {
+			stamina = 25;
+			inpoints = 25;
+			happypoints= 10;
+		}
+		if (chois == 3) {
+			stamina = 40;
+			inpoints = 5;
+			happypoints = 15;
+		}
+	}
 	void set_stamina(int stamina2) {
 		stamina = stamina2;
 	}
@@ -22,7 +49,12 @@ public:
 	void set_inpoints(int intelligence) {
 		inpoints = intelligence;
 	}
-
+	void set_happypoints(int hap) {
+		happypoints = hap;
+	}
+	int get_haappypoints() {
+		return happypoints;
+	}
 	int get_stamina() {
 		return stamina;
 	}
@@ -30,13 +62,8 @@ public:
 	int get_inpoints() {
 		return inpoints;
 	}
-
 	void mod_intelligence(int more) {
-		int inte = get_inpoints();
-
-		inte = inte + more;
-
-		set_inpoints(inte);
+		inpoints += more;
 	}
 
 	void mod_stamina(int type) {
@@ -51,8 +78,19 @@ public:
 		}
 		set_stamina(stam);
 	}
+	void mod_happypoints(int hap) {
+		int happyp = get_haappypoints();
 
+		happyp += hap;
 
+		set_happypoints(happyp);
+	}
+
+	void decrease_happy(int hap) {
+		int happe = get_haappypoints();
+		happe -= hap;
+		set_happypoints(happe);
+	}
 	void blink() {
 		int in;
 		in = get_stamina();
@@ -156,10 +194,13 @@ public:
 		string kittysay = "мяяу\n";
 		string kittysay2 = "мурррр\n";
 		string kittysay3 = "мяяяууу муррр\n";
+		string kittybye = "пфффф.....шшшшшш!!!!\n";
 
 		int count = 0;
+		int chap = 0;
+		int quit = 0;
 
-		while (yousay != "Пока") {
+		while (yousay != "Пока" /*|| quit!=1*/) {
 			cin >> yousay;
 			int value = rand() % 100;
 			if (value < 25) {
@@ -176,23 +217,33 @@ public:
 			}
 			if (yousay == "Привет") {
 				cout << "мурррр мяу!!\n";
+				chap++;
 			}
-			if (yousay == "cute") {
+			if (yousay == "Куку") {
 				cout << "ммм мяяяуу...\n";
+				chap++;
 			}
-			if (yousay == "Котик") {
-				Murdock gatito;
-				gatito.surprised();
+			if (yousay == "Кис-кис") {
+				/*Murdock gatito;*/
+				/*gatito.*/surprised();
+				chap++;
 			}
 			count++;
+			//if (chap > 10) {
+			//	cout << kittybye;
+			//	quit++;
+			//}
 		}
 		mod_intelligence(count);
+		mod_happypoints(chap);
 	}
 
 	void math() {
+		srand(time(NULL));
 		string murdy = "  /\\_/\\\n (^.w.^)- <( ";
 		int reply=0;
 		int intelligence = 0;
+		int happy = 0;
 
 		cout << "Давай начнем, если хочешь закончить напиши -1\n\n";
 
@@ -207,16 +258,17 @@ public:
 			cin >> reply;
 			if (reply == (value + value2)) {
 				cout << "мяяу!\n";
-				cout << "+1 к интелекту\n";
+				cout << "+2 к интелекту -1 к радости\n";
 				intelligence++;
 				intelligence++;
+				happy++;
 			}
 			else {
 				cout << "  /\\_/\\\n (O.>.o)......мяяяу?\n (0|||0)\n  |||||\n (\\|||/)\n";
 			}
 
 		}
-
+		decrease_happy(happy);
 		mod_intelligence(intelligence);
 	}
 
@@ -226,14 +278,29 @@ int main() {
 	system("color 0c");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	Murdock gatito;
+	
+	/*Murdock gatito;*/
 	int ans=-1;
 	string ans1;
 	int suma;
+	string Nick;
+	int vibor=0;
+	cout << "Введите имя: "; cin >> Nick;
+	ifstream ifs(Nick, ios::binary);
+	if (!ifs) { cout << "\t\t\t\t Выберите спецификацию персонажа:\n 1 - Веселый болванчик\n 2 - Аристократ\n 3 - Здоровенная детина\n\n Ваш выбор: ";
+				cin >> vibor; 
+			  }
+	if (vibor == 0) {
+		vibor = 2;
+	}
+	Murdock gatito(Nick, vibor);
+		ifs.read(reinterpret_cast<char*>(&gatito), sizeof(gatito));
+		ifs.close();
+	
 
 	while (ans != 0) {
 
-		cout << "\n\n\n Что ты хочешь сделать?\n\n0-выход\n1-танцевать\n2-бегать\n3-eat\n4-общаться\n5-заниматся математикой\n6-просмотреть выносливость\n7-просмотреть интеллект\n";
+		cout << "\n\n\n Что ты хочешь сделать?\n\n0-выход\n1-танцевать\n2-бегать\n3-eat\n4-общаться\n5-заниматся математикой\n6-просмотреть выносливость\n7-просмотреть интеллект\n8-просотреть уровень радости\n";
 		cout << "Твой выбор: ";
 		cin >> ans;
 
@@ -271,13 +338,22 @@ int main() {
 			z3();
 			break;
 		}
-
+		case 8: {
+			int hp;
+			hp = gatito.get_haappypoints();
+			cout << hp << endl;
+			z3();
+			break;
+		}
 		default:
 			cout << "Не правильно! Попробуй снова\n";
 			break;
 		} 
 		if (system("CLS")) system("clear");
-	} 
+	}
+	ofstream ofs(Nick, ios::binary);
+	ofs.write(reinterpret_cast<char*>(&gatito), sizeof(gatito));
+	ofs.close();
 	return 0;
 }
 
